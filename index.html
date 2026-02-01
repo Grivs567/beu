@@ -1,152 +1,209 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Important Question 💖</title>
+<meta charset="UTF-8">
+<title>A Small Question 💖</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<style>
+* { box-sizing: border-box; }
 
-    body {
-      height: 100vh;
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      background: linear-gradient(135deg, #ffe6f0, #ffd6e8);
-      font-family: "Comic Sans MS", cursive;
-      overflow: hidden;
-      text-align: center;
-    }
+body {
+  margin: 0;
+  height: 100vh;
+  overflow: hidden;
+  font-family: "Comic Sans MS", cursive;
+  background: linear-gradient(270deg, #ffe6f0, #ffd1e8, #ffe6f0);
+  background-size: 600% 600%;
+  animation: bgMove 14s ease infinite;
+  color: #b30059;
+}
 
-    h1 {
-      margin-bottom: 40px;
-      color: #cc005f;
-    }
+@keyframes bgMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
 
-    .buttons {
-      
-      width: 300px;
-      height: 120px;
-    }
+.page {
+  position: absolute;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
 
-	button {
-	  width: 110px;
-	  height: 110px;
-	  font-size: 20px;
-	  border-radius: 50%;
-	  border: none;
-	  cursor: pointer;
-	}
+.page.active { display: flex; }
 
+h1, h2 { margin-bottom: 30px; }
 
-    button:active {
-      transform: scale(0.95);
-    }
+button {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  margin: 15px;
+}
 
-	#yes {
-	  background: #ff4d88;
-	  color: white;
-	  position: relative;
-	  z-index: 2;
-	  font-size: 24px;
-	}
+#yes {
+  background: #ff4d88;
+  color: white;
+  font-size: 24px;
+  box-shadow: 0 0 30px rgba(255,77,136,0.7);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
 
+#no {
+  background: #555;
+  color: white;
+  position: fixed;
+  transition: left 0.35s ease-out, top 0.35s ease-out;
+}
 
-    #no {
-      background: #555;
-      color: white;
-      position: fixed;
-      left: 400px;
-      top: 0;
-      z-index: 1;
-    }
+.link {
+  margin-top: 30px;
+  font-size: 18px;
+  color: #cc005f;
+  cursor: pointer;
+  text-decoration: underline;
+}
 
-    #message {
-      margin-top: 30px;
-      font-size: 22px;
-      color: #b30059;
-      display: none;
-    }
+/* Particles */
+.particle {
+  position: fixed;
+  pointer-events: none;
+  animation: floatUp 2s ease-out forwards;
+  font-size: 22px;
+}
 
-    .firework {
-      position: absolute;
-      font-size: 32px;
-      animation: pop 1s ease-out forwards;
-      pointer-events: none;
-    }
-
-    @keyframes pop {
-      0% {
-        transform: scale(0);
-        opacity: 1;
-      }
-      100% {
-        transform: scale(2);
-        opacity: 0;
-      }
-    }
-  </style>
+@keyframes floatUp {
+  0% { transform: translateY(0) scale(0.6); opacity: 1; }
+  100% { transform: translateY(-140px) scale(1.4); opacity: 0; }
+}
+</style>
 </head>
 
 <body>
-  <h1>Will you be my Valentine? 🥺💘</h1>
 
-  <div class="buttons">
-    <button id="yes">Yes 💖</button>
-    <button id="no">No 😒</button>
-  </div>
+<!-- 🎵 Music (starts after interaction) -->
+<audio id="music" loop>
+  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_1b0c7d3f2b.mp3" type="audio/mpeg">
+</audio>
 
-  <div id="message">
-    YAY!!! ❤️ I knew it 😍  
-    <br />Now you’re officially stuck with me 😌
-  </div>
+<!-- PAGE 1 -->
+<div class="page active" id="page1">
+  <h1>Hey… I have a small question 🥺💘</h1>
+  <button onclick="goTo('page2'); startMusic()">Okay 😊</button>
+</div>
 
-  <script>
-    const noBtn = document.getElementById("no");
-    const yesBtn = document.getElementById("yes");
-    const message = document.getElementById("message");
+<!-- PAGE 2 -->
+<div class="page" id="page2">
+  <h2>Be honest… and think carefully 😌</h2>
+  <button onclick="goTo('page3')">I’m ready 💗</button>
+</div>
 
+<!-- PAGE 3 : YES / NO GAME -->
+<div class="page" id="page3">
+  <h1>Will you be my Valentine? 💖</h1>
+  <button id="yes">Yes 💘</button>
+  <button id="no">No 😒</button>
+</div>
 
+<!-- PAGE 4 -->
+<div class="page" id="page4">
+  <h1>YAY!!! ❤️😍</h1>
+  <h2>You’re officially stuck with me now 😌</h2>
+  <div class="link" onclick="goTo('page5')">One last thing… 👀</div>
+</div>
 
-	function moveNoButton() {
-	  const padding = 20;
+<!-- PAGE 5 -->
+<div class="page" id="page5">
+  <h1>Screenshot this 💍</h1>
+  <h2>Because proof matters 😌💖</h2>
+  <div class="link" onclick="spawnParticles('💖',40)">Celebrate again 🎉</div>
+</div>
 
-	  const maxX = window.innerWidth - noBtn.offsetWidth - padding;
-	  const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+<script>
+const music = document.getElementById("music");
+const yesBtn = document.getElementById("yes");
+const noBtn = document.getElementById("no");
 
-	  const minX = padding;
-	  const minY = padding;
+let musicStarted = false;
 
-	  const x = Math.random() * (maxX - minX) + minX;
-	  const y = Math.random() * (maxY - minY) + minY;
+function startMusic() {
+  if (!musicStarted) {
+    music.play().catch(()=>{});
+    musicStarted = true;
+  }
+}
 
-	  noBtn.style.left = x + "px";
-	  noBtn.style.top = y + "px";
-	}
+function goTo(id) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
 
+/* NO button logic */
+function moveNo() {
+  const yesRect = yesBtn.getBoundingClientRect();
+  const cx = yesRect.left + yesRect.width / 2;
+  const cy = yesRect.top + yesRect.height / 2;
 
-    noBtn.addEventListener("mouseover", moveNoButton);
-    noBtn.addEventListener("touchstart", moveNoButton);
+  const minR = 130;
+  const maxR = 240;
+  const angle = Math.random() * Math.PI * 2;
+  const radius = minR + Math.random() * (maxR - minR);
 
-    yesBtn.addEventListener("click", () => {
-      message.style.display = "block";
+  let x = cx + radius * Math.cos(angle) - noBtn.offsetWidth / 2;
+  let y = cy + radius * Math.sin(angle) - noBtn.offsetHeight / 2;
 
-      for (let i = 0; i < 25; i++) {
-        const fw = document.createElement("div");
-        fw.className = "firework";
-        fw.innerText = "💖";
+  const minY = window.innerHeight / 2;
+  const maxY = window.innerHeight - noBtn.offsetHeight - 20;
 
-        fw.style.left = Math.random() * window.innerWidth + "px";
-        fw.style.top = Math.random() * window.innerHeight + "px";
+  y = Math.max(minY, Math.min(y, maxY));
+  x = Math.max(20, Math.min(x, window.innerWidth - noBtn.offsetWidth - 20));
 
-        document.body.appendChild(fw);
-        setTimeout(() => fw.remove(), 1000);
-      }
-    });
-  </script>
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
+}
+
+noBtn.addEventListener("mouseover", moveNo);
+noBtn.addEventListener("touchstart", moveNo);
+
+/* YES effects */
+document.addEventListener("mousemove", e => {
+  if (!yesBtn) return;
+  const r = yesBtn.getBoundingClientRect();
+  const d = Math.hypot(
+    e.clientX - (r.left + r.width/2),
+    e.clientY - (r.top + r.height/2)
+  );
+  yesBtn.style.transform = d < 160 ? "scale(1.15)" : "scale(1)";
+});
+
+yesBtn.addEventListener("mouseenter", ()=>spawnParticles("💗",6));
+
+yesBtn.addEventListener("click", ()=>{
+  spawnParticles("💖",30);
+  spawnParticles("✨",20);
+  goTo("page4");
+});
+
+/* Particles */
+function spawnParticles(symbol, count) {
+  for (let i = 0; i < count; i++) {
+    const p = document.createElement("div");
+    p.className = "particle";
+    p.innerText = symbol;
+    p.style.left = Math.random()*window.innerWidth + "px";
+    p.style.top = Math.random()*window.innerHeight + "px";
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(),2000);
+  }
+}
+</script>
+
 </body>
 </html>
