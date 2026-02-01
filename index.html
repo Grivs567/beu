@@ -1,208 +1,490 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>A Small Question 💖</title>
+<meta charset="UTF-8" />
+<title>NEURAL PULSE</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdn.jsdelivr.net/npm/tsparticles@3/tsparticles.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.148/build/three.min.js"></script>
 
 <style>
-* { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  height: 100vh;
-  overflow: hidden;
-  font-family: "Comic Sans MS", cursive;
-  background: linear-gradient(270deg, #ffe6f0, #ffd1e8, #ffe6f0);
-  background-size: 600% 600%;
-  animation: bgMove 14s ease infinite;
-  color: #b30059;
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { 
+  height: 100%; 
+  overflow: hidden; 
+  background: #000; 
+  font-family: 'Segoe UI', monospace; 
+  color: #fff; 
+  cursor: crosshair;
+  -webkit-tap-highlight-color: transparent;
 }
 
-@keyframes bgMove {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+#scene { 
+  position: fixed; 
+  inset: 0; 
+  z-index: 1; 
+  background: radial-gradient(circle at 50% 50%, #0a0a1a, #000);
 }
 
-.page {
-  position: absolute;
-  inset: 0;
-  display: none;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+#intro { 
+  position: fixed; 
+  inset: 0; 
+  background: #000; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  z-index: 100; 
+  animation: pulseBg 2s infinite alternate;
 }
 
-.page.active { display: flex; }
-
-h1, h2 { margin-bottom: 30px; }
-
-button {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
-  font-size: 20px;
-  margin: 15px;
+#intro h1 { 
+  font-size: clamp(2rem, 5vw, 4rem); 
+  text-transform: uppercase; 
+  letter-spacing: 0.3em; 
+  background: linear-gradient(45deg, #ff00ff, #00ffff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 30px rgba(255, 0, 255, 0.5);
+  animation: neonPulse 1.5s ease-in-out infinite alternate;
 }
 
-#yes {
-  background: #ff4d88;
-  color: white;
-  font-size: 24px;
-  box-shadow: 0 0 30px rgba(255,77,136,0.7);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+#counter { 
+  position: fixed; 
+  top: 20px; 
+  right: 20px; 
+  font-size: 1.5rem; 
+  color: #00ffff; 
+  z-index: 10; 
+  font-weight: bold;
 }
 
-#no {
-  background: #555;
-  color: white;
-  position: fixed;
-  transition: left 0.35s ease-out, top 0.35s ease-out;
+#pulseButton { 
+  position: fixed; 
+  bottom: 30px; 
+  left: 50%; 
+  transform: translateX(-50%); 
+  padding: 15px 40px; 
+  background: linear-gradient(45deg, #ff00ff, #00ffff); 
+  border: none; 
+  border-radius: 50px; 
+  color: white; 
+  font-size: 1.2rem; 
+  font-weight: bold; 
+  cursor: pointer; 
+  z-index: 10; 
+  box-shadow: 0 0 30px rgba(255, 0, 255, 0.5);
+  animation: buttonGlow 2s infinite alternate;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
-.link {
-  margin-top: 30px;
-  font-size: 18px;
-  color: #cc005f;
-  cursor: pointer;
-  text-decoration: underline;
+#pulseButton:hover { 
+  transform: translateX(-50%) scale(1.1); 
+  box-shadow: 0 0 50px rgba(255, 0, 255, 0.8);
 }
 
-/* Particles */
-.particle {
-  position: fixed;
-  pointer-events: none;
-  animation: floatUp 2s ease-out forwards;
-  font-size: 22px;
+#energyBar { 
+  position: fixed; 
+  top: 20px; 
+  left: 20px; 
+  width: 200px; 
+  height: 10px; 
+  background: rgba(255, 255, 255, 0.1); 
+  border-radius: 5px; 
+  overflow: hidden; 
+  z-index: 10;
 }
 
-@keyframes floatUp {
-  0% { transform: translateY(0) scale(0.6); opacity: 1; }
-  100% { transform: translateY(-140px) scale(1.4); opacity: 0; }
+#energyFill { 
+  width: 0%; 
+  height: 100%; 
+  background: linear-gradient(90deg, #00ffff, #ff00ff); 
+  transition: width 0.5s;
+}
+
+#instructions { 
+  position: fixed; 
+  top: 50%; 
+  left: 50%; 
+  transform: translate(-50%, -50%); 
+  text-align: center; 
+  font-size: 1.5rem; 
+  z-index: 5; 
+  opacity: 0.8;
+}
+
+#clickIndicator { 
+  position: fixed; 
+  width: 100px; 
+  height: 100px; 
+  border-radius: 50%; 
+  border: 3px dashed #00ffff; 
+  pointer-events: none; 
+  z-index: 3; 
+  animation: spin 10s linear infinite;
+}
+
+#reactor { 
+  position: fixed; 
+  width: 300px; 
+  height: 300px; 
+  border-radius: 50%; 
+  background: radial-gradient(circle, rgba(255, 0, 255, 0.2), transparent 70%); 
+  pointer-events: none; 
+  z-index: 2; 
+  opacity: 0;
+}
+
+@keyframes pulseBg {
+  0% { background: #000; }
+  100% { background: #0a0a1a; }
+}
+
+@keyframes neonPulse {
+  0% { text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff; }
+  100% { text-shadow: 0 0 20px #00ffff, 0 0 40px #00ffff; }
+}
+
+@keyframes buttonGlow {
+  0% { box-shadow: 0 0 20px rgba(255, 0, 255, 0.5); }
+  100% { box-shadow: 0 0 40px rgba(0, 255, 255, 0.7); }
+}
+
+@keyframes spin {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
 }
 </style>
 </head>
 
 <body>
 
-<!-- 🎵 Music (starts after interaction) -->
-<audio id="music" loop>
-  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_1b0c7d3f2b.mp3" type="audio/mpeg">
-</audio>
-
-<!-- PAGE 1 -->
-<div class="page active" id="page1">
-  <h1>Hey… I have a small question 🥺💘</h1>
-  <button onclick="goTo('page2'); startMusic()">Okay 😊</button>
-</div>
-
-<!-- PAGE 2 -->
-<div class="page" id="page2">
-  <h2>Be honest… and think carefully 😌</h2>
-  <button onclick="goTo('page3')">I’m ready 💗</button>
-</div>
-
-<!-- PAGE 3 : YES / NO GAME -->
-<div class="page" id="page3">
-  <h1>Will you be my Valentine? 💖</h1>
-  <button id="yes">Yes 💘</button>
-  <button id="no">No 😒</button>
-</div>
-
-<!-- PAGE 4 -->
-<div class="page" id="page4">
-  <h1>YAY!!! ❤️😍</h1>
-  <h2>You’re officially stuck with me now 😌</h2>
-  <div class="link" onclick="goTo('page5')">One last thing… 👀</div>
-</div>
-
-<!-- PAGE 5 -->
-<div class="page" id="page5">
-  <h1>Screenshot this 💍</h1>
-  <h2>Because proof matters 😌💖</h2>
-  <div class="link" onclick="spawnParticles('💖',40)">Celebrate again 🎉</div>
-</div>
+<div id="scene"></div>
+<div id="intro"><h1>NEURAL PULSE</h1></div>
+<div id="counter">00000</div>
+<div id="energyBar"><div id="energyFill"></div></div>
+<div id="instructions">CLICK ANYWHERE → FEED THE SYSTEM</div>
+<div id="clickIndicator"></div>
+<div id="reactor"></div>
+<button id="pulseButton">PULSE NOW</button>
 
 <script>
-const music = document.getElementById("music");
-const yesBtn = document.getElementById("yes");
-const noBtn = document.getElementById("no");
+// ==================== IMMEDIATE ENGAGEMENT ====================
+let clickCount = 0;
+let energy = 0;
+let isPlaying = false;
+const audio = new Audio('https://assets.mixkit.co/music/preview/mixkit-tech-house-vibes-130.mp3');
+audio.loop = true;
+audio.volume = 0;
 
-let musicStarted = false;
+// ==================== PARTICLE SYSTEM ====================
+tsParticles.load("scene", {
+  particles: {
+    number: { value: 30 },
+    color: { value: ["#ff00ff", "#00ffff"] },
+    opacity: { value: 0.8 },
+    size: { value: { min: 2, max: 5 } },
+    move: { 
+      enable: true, 
+      speed: 1,
+      direction: "outside",
+      outModes: "bounce"
+    },
+    links: {
+      enable: true,
+      distance: 100,
+      color: "#ffffff",
+      opacity: 0.2
+    }
+  },
+  interactivity: {
+    events: {
+      onClick: { enable: true, mode: "push" },
+      onHover: { enable: true, mode: "repulse" }
+    }
+  }
+});
 
-function startMusic() {
-  if (!musicStarted) {
-    music.play().catch(()=>{});
-    musicStarted = true;
+// ==================== START EXPERIENCE ====================
+function startExperience() {
+  if (isPlaying) return;
+  isPlaying = true;
+  
+  // Remove intro
+  gsap.to("#intro", { opacity: 0, duration: 0.5, onComplete: () => {
+    document.getElementById("intro").remove();
+  }});
+  
+  // Start audio
+  audio.play();
+  gsap.to(audio, { volume: 0.3, duration: 2 });
+  
+  // Animate instructions
+  gsap.to("#instructions", { 
+    y: -50, 
+    duration: 2, 
+    ease: "power2.out",
+    opacity: 1 
+  });
+  
+  // Show click indicator
+  document.getElementById("clickIndicator").style.display = "block";
+  
+  // Start heartbeat
+  setInterval(heartbeat, 1000);
+}
+
+// ==================== HEARTBEAT SYSTEM ====================
+function heartbeat() {
+  if (energy > 0) {
+    energy = Math.max(0, energy - 5);
+    updateEnergyBar();
+    
+    // Visual pulse
+    gsap.to("#scene", {
+      background: "radial-gradient(circle at 50% 50%, #1a0a2a, #000)",
+      duration: 0.5,
+      yoyo: true,
+      repeat: 1
+    });
   }
 }
 
-function goTo(id) {
-  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-}
-
-/* NO button logic */
-function moveNo() {
-  const yesRect = yesBtn.getBoundingClientRect();
-  const cx = yesRect.left + yesRect.width / 2;
-  const cy = yesRect.top + yesRect.height / 2;
-
-  const minR = 130;
-  const maxR = 240;
-  const angle = Math.random() * Math.PI * 2;
-  const radius = minR + Math.random() * (maxR - minR);
-
-  let x = cx + radius * Math.cos(angle) - noBtn.offsetWidth / 2;
-  let y = cy + radius * Math.sin(angle) - noBtn.offsetHeight / 2;
-
-  const minY = window.innerHeight / 2;
-  const maxY = window.innerHeight - noBtn.offsetHeight - 20;
-
-  y = Math.max(minY, Math.min(y, maxY));
-  x = Math.max(20, Math.min(x, window.innerWidth - noBtn.offsetWidth - 20));
-
-  noBtn.style.left = x + "px";
-  noBtn.style.top = y + "px";
-}
-
-noBtn.addEventListener("mouseover", moveNo);
-noBtn.addEventListener("touchstart", moveNo);
-
-/* YES effects */
-document.addEventListener("mousemove", e => {
-  if (!yesBtn) return;
-  const r = yesBtn.getBoundingClientRect();
-  const d = Math.hypot(
-    e.clientX - (r.left + r.width/2),
-    e.clientY - (r.top + r.height/2)
-  );
-  yesBtn.style.transform = d < 160 ? "scale(1.15)" : "scale(1)";
-});
-
-yesBtn.addEventListener("mouseenter", ()=>spawnParticles("💗",6));
-
-yesBtn.addEventListener("click", ()=>{
-  spawnParticles("💖",30);
-  spawnParticles("✨",20);
-  goTo("page4");
-});
-
-/* Particles */
-function spawnParticles(symbol, count) {
-  for (let i = 0; i < count; i++) {
-    const p = document.createElement("div");
-    p.className = "particle";
-    p.innerText = symbol;
-    p.style.left = Math.random()*window.innerWidth + "px";
-    p.style.top = Math.random()*window.innerHeight + "px";
-    document.body.appendChild(p);
-    setTimeout(()=>p.remove(),2000);
+// ==================== CLICK HANDLER ====================
+function handleClick(x, y, isButton = false) {
+  clickCount++;
+  
+  // Update counter with animation
+  const counter = document.getElementById("counter");
+  counter.textContent = String(clickCount).padStart(5, '0');
+  gsap.to(counter, { 
+    scale: 1.2, 
+    color: isButton ? "#ff00ff" : "#00ffff",
+    duration: 0.2, 
+    yoyo: true 
+  });
+  
+  // Add energy
+  energy = Math.min(100, energy + (isButton ? 20 : 10));
+  updateEnergyBar();
+  
+  // Create visual effect
+  createClickEffect(x, y, isButton);
+  
+  // Audio feedback
+  if (audio.volume < 0.7) {
+    audio.volume = Math.min(0.7, audio.volume + 0.02);
+  }
+  
+  // Particle explosion
+  tsParticles.load("scene", {
+    particles: {
+      number: { value: 50 + clickCount },
+      color: { value: isButton ? "#ff00ff" : "#00ffff" },
+      move: { speed: 2 + (clickCount * 0.1) },
+      links: { distance: 100 + clickCount }
+    }
+  });
+  
+  // Show reactor on high energy
+  if (energy > 70) {
+    showReactor(x, y);
+  }
+  
+  // Random message
+  if (Math.random() > 0.7) {
+    showRandomMessage();
   }
 }
+
+function createClickEffect(x, y, isButton) {
+  const effect = document.createElement("div");
+  effect.style.cssText = `
+    position: fixed;
+    left: ${x}px;
+    top: ${y}px;
+    width: 0px;
+    height: 0px;
+    border-radius: 50%;
+    background: radial-gradient(circle, ${isButton ? "#ff00ff" : "#00ffff"}, transparent);
+    pointer-events: none;
+    z-index: 5;
+  `;
+  document.body.appendChild(effect);
+  
+  gsap.to(effect, {
+    width: "200px",
+    height: "200px",
+    opacity: 0,
+    duration: 1,
+    onComplete: () => effect.remove()
+  });
+}
+
+function updateEnergyBar() {
+  document.getElementById("energyFill").style.width = `${energy}%`;
+  
+  // Change color based on energy
+  const colors = energy > 70 ? ["#ff00ff", "#ff0000"] : 
+                  energy > 40 ? ["#00ffff", "#ff00ff"] : 
+                  ["#00ffff", "#0088ff"];
+  
+  document.getElementById("energyFill").style.background = 
+    `linear-gradient(90deg, ${colors[0]}, ${colors[1]})`;
+}
+
+function showReactor(x, y) {
+  const reactor = document.getElementById("reactor");
+  reactor.style.left = `${x}px`;
+  reactor.style.top = `${y}px`;
+  
+  gsap.to(reactor, {
+    opacity: 0.5,
+    scale: 1.5,
+    duration: 1,
+    onComplete: () => {
+      gsap.to(reactor, {
+        opacity: 0,
+        scale: 1,
+        duration: 0.5
+      });
+    }
+  });
+}
+
+function showRandomMessage() {
+  const messages = [
+    "FEED ME MORE",
+    "SYSTEM OVERLOAD",
+    "NEURAL CONNECTION ACTIVE",
+    "PULSE DETECTED",
+    "ENERGY SURGE",
+    "CRITICAL MASS ACHIEVED"
+  ];
+  
+  const msg = document.createElement("div");
+  msg.textContent = messages[Math.floor(Math.random() * messages.length)];
+  msg.style.cssText = `
+    position: fixed;
+    top: ${30 + Math.random() * 40}%;
+    left: ${20 + Math.random() * 60}%;
+    color: #ff00ff;
+    font-size: ${1 + Math.random()}rem;
+    font-weight: bold;
+    pointer-events: none;
+    z-index: 10;
+    opacity: 0;
+  `;
+  document.body.appendChild(msg);
+  
+  gsap.to(msg, {
+    opacity: 1,
+    y: -50,
+    duration: 1,
+    onComplete: () => {
+      gsap.to(msg, {
+        opacity: 0,
+        duration: 0.5,
+        onComplete: () => msg.remove()
+      });
+    }
+  });
+}
+
+// ==================== EVENT LISTENERS ====================
+// Start on ANY interaction
+document.addEventListener('click', (e) => {
+  if (!isPlaying) {
+    startExperience();
+    handleClick(e.clientX, e.clientY);
+  } else {
+    handleClick(e.clientX, e.clientY);
+  }
+});
+
+document.addEventListener('touchstart', (e) => {
+  if (!isPlaying) {
+    startExperience();
+    handleClick(e.touches[0].clientX, e.touches[0].clientY);
+  } else {
+    handleClick(e.touches[0].clientX, e.touches[0].clientY);
+  }
+});
+
+// Button click
+document.getElementById("pulseButton").addEventListener("click", (e) => {
+  e.stopPropagation();
+  handleClick(e.clientX, e.clientY, true);
+  
+  // Button animation
+  gsap.to("#pulseButton", {
+    scale: 1.3,
+    duration: 0.2,
+    yoyo: true
+  });
+});
+
+// Mouse move effects
+document.addEventListener("mousemove", (e) => {
+  // Move click indicator
+  const indicator = document.getElementById("clickIndicator");
+  indicator.style.left = `${e.clientX}px`;
+  indicator.style.top = `${e.clientY}px`;
+  
+  // Particle repulse effect
+  if (isPlaying && Math.random() > 0.8) {
+    tsParticles.load("scene", {
+      particles: {
+        move: { speed: 1 + energy/50 }
+      }
+    });
+  }
+});
+
+// Keyboard support
+document.addEventListener("keydown", (e) => {
+  if (e.code === "Space") {
+    handleClick(window.innerWidth/2, window.innerHeight/2, true);
+  }
+});
+
+// Mobile tap indicator
+if ('ontouchstart' in window) {
+  document.body.style.cursor = "pointer";
+  document.getElementById("instructions").textContent = "TAP ANYWHERE → FEED THE SYSTEM";
+}
+
+// ==================== PROGRESSIVE DIFFICULTY ====================
+setInterval(() => {
+  if (isPlaying && energy < 30 && clickCount > 10) {
+    document.getElementById("instructions").textContent = 
+      clickCount > 50 ? "DON'T STOP NOW → SYSTEM DEPENDS ON YOU" :
+      clickCount > 20 ? "KEEP GOING → ENERGY DROPPING" :
+      "CLICK FASTER → ENERGY LOW";
+    
+    gsap.to("#instructions", {
+      color: "#ff0000",
+      duration: 0.5,
+      yoyo: true
+    });
+  }
+}, 3000);
+
+// ==================== START PULSE ====================
+// Auto-start after 3 seconds
+setTimeout(() => {
+  if (!isPlaying) {
+    document.getElementById("instructions").innerHTML = 
+      "⚠️ CLICK NOW OR SYSTEM WILL SHUTDOWN ⚠️";
+    gsap.to("#instructions", {
+      scale: 1.1,
+      duration: 0.5,
+      repeat: 3
+    });
+  }
+}, 3000);
 </script>
 
 </body>
