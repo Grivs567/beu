@@ -33,31 +33,34 @@
       height: 120px;
     }
 
-    button {
-      padding: 14px 30px;
-      font-size: 18px;
-      border-radius: 10px;
-      border: none;
-      cursor: pointer;
-      transition: transform 0.2s ease;
-    }
+	button {
+	  width: 110px;
+	  height: 110px;
+	  font-size: 20px;
+	  border-radius: 50%;
+	  border: none;
+	  cursor: pointer;
+	}
+
 
     button:active {
       transform: scale(0.95);
     }
 
-    #yes {
-      background: #ff4d88;
-      color: white;
-      position: relative;
-      z-index: 2;
-    }
+	#yes {
+	  background: #ff4d88;
+	  color: white;
+	  position: relative;
+	  z-index: 2;
+	  font-size: 24px;
+	}
+
 
     #no {
       background: #555;
       color: white;
       position: absolute;
-      left: 160px;
+      left: 400px;
       top: 0;
       z-index: 1;
     }
@@ -90,7 +93,7 @@
 </head>
 
 <body>
-  <h1>Will you be my girlfriend? 🥺💘</h1>
+  <h1>Will you be my Valentine? 🥺💘</h1>
 
   <div class="buttons">
     <button id="yes">Yes 💖</button>
@@ -107,24 +110,23 @@
     const yesBtn = document.getElementById("yes");
     const message = document.getElementById("message");
 
-    let escapeCount = 0;
 
-    function moveNoButton() {
-      escapeCount++;
 
-      const maxX = window.innerWidth - noBtn.offsetWidth;
-      const maxY = window.innerHeight - noBtn.offsetHeight;
+	function moveNoButton() {
+	  const padding = 100;
 
-      const x = Math.random() * maxX;
-      const y = Math.random() * maxY;
+	  const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+	  const maxY = window.innerHeight - noBtn.offsetHeight - padding;
 
-      noBtn.style.left = x + "px";
-      noBtn.style.top = y + "px";
+	  const minX = padding;
+	  const minY = padding;
 
-      // Make "No" weaker over time 😈
-      const scale = Math.max(0.6, 1 - escapeCount * 0.05);
-      noBtn.style.transform = `scale(${scale})`;
-    }
+	  const x = Math.random() * (maxX - minX) + minX;
+	  const y = Math.random() * (maxY - minY) + minY;
+
+	  noBtn.style.left = x + "px";
+	  noBtn.style.top = y + "px";
+	}
 
     noBtn.addEventListener("mouseover", moveNoButton);
     noBtn.addEventListener("touchstart", moveNoButton);
