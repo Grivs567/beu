@@ -28,7 +28,7 @@
     }
 
     .buttons {
-      position: relative;
+      
       width: 300px;
       height: 120px;
     }
@@ -59,7 +59,7 @@
     #no {
       background: #555;
       color: white;
-      position: absolute;
+      position: fixed;
       left: 400px;
       top: 0;
       z-index: 1;
@@ -113,7 +113,7 @@
 
 
 	function moveNoButton() {
-	  const padding = 100;
+	  const padding = 20;
 
 	  const maxX = window.innerWidth - noBtn.offsetWidth - padding;
 	  const maxY = window.innerHeight - noBtn.offsetHeight - padding;
@@ -127,6 +127,7 @@
 	  noBtn.style.left = x + "px";
 	  noBtn.style.top = y + "px";
 	}
+
 
     noBtn.addEventListener("mouseover", moveNoButton);
     noBtn.addEventListener("touchstart", moveNoButton);
