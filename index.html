@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Important Question 💖</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #ffe6f0, #ffd6e8);
+      font-family: "Comic Sans MS", cursive;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 40px;
+      color: #cc005f;
+    }
+
+    .buttons {
+      position: relative;
+      width: 300px;
+      height: 120px;
+    }
+
+    button {
+      padding: 14px 30px;
+      font-size: 18px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    button:active {
+      transform: scale(0.95);
+    }
+
+    #yes {
+      background: #ff4d88;
+      color: white;
+      position: relative;
+      z-index: 2;
+    }
+
+    #no {
+      background: #555;
+      color: white;
+      position: absolute;
+      left: 160px;
+      top: 0;
+      z-index: 1;
+    }
+
+    #message {
+      margin-top: 30px;
+      font-size: 22px;
+      color: #b30059;
+      display: none;
+    }
+
+    .firework {
+      position: absolute;
+      font-size: 32px;
+      animation: pop 1s ease-out forwards;
+      pointer-events: none;
+    }
+
+    @keyframes pop {
+      0% {
+        transform: scale(0);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(2);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Will you be my girlfriend? 🥺💘</h1>
+
+  <div class="buttons">
+    <button id="yes">Yes 💖</button>
+    <button id="no">No 😒</button>
+  </div>
+
+  <div id="message">
+    YAY!!! ❤️ I knew it 😍  
+    <br />Now you’re officially stuck with me 😌
+  </div>
+
+  <script>
+    const noBtn = document.getElementById("no");
+    const yesBtn = document.getElementById("yes");
+    const message = document.getElementById("message");
+
+    let escapeCount = 0;
+
+    function moveNoButton() {
+      escapeCount++;
+
+      const maxX = window.innerWidth - noBtn.offsetWidth;
+      const maxY = window.innerHeight - noBtn.offsetHeight;
+
+      const x = Math.random() * maxX;
+      const y = Math.random() * maxY;
+
+      noBtn.style.left = x + "px";
+      noBtn.style.top = y + "px";
+
+      // Make "No" weaker over time 😈
+      const scale = Math.max(0.6, 1 - escapeCount * 0.05);
+      noBtn.style.transform = `scale(${scale})`;
+    }
+
+    noBtn.addEventListener("mouseover", moveNoButton);
+    noBtn.addEventListener("touchstart", moveNoButton);
+
+    yesBtn.addEventListener("click", () => {
+      message.style.display = "block";
+
+      for (let i = 0; i < 25; i++) {
+        const fw = document.createElement("div");
+        fw.className = "firework";
+        fw.innerText = "💖";
+
+        fw.style.left = Math.random() * window.innerWidth + "px";
+        fw.style.top = Math.random() * window.innerHeight + "px";
+
+        document.body.appendChild(fw);
+        setTimeout(() => fw.remove(), 1000);
+      }
+    });
+  </script>
+</body>
+</html>
