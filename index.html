@@ -2,490 +2,943 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title>NEURAL PULSE</title>
+<title>Our Valentine's Journey ❤️</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<script src="https://cdn.jsdelivr.net/npm/tsparticles@3/tsparticles.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.148/build/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-html, body { 
-  height: 100%; 
-  overflow: hidden; 
-  background: #000; 
-  font-family: 'Segoe UI', monospace; 
-  color: #fff; 
-  cursor: crosshair;
-  -webkit-tap-highlight-color: transparent;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-#scene { 
-  position: fixed; 
-  inset: 0; 
-  z-index: 1; 
-  background: radial-gradient(circle at 50% 50%, #0a0a1a, #000);
+html, body {
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Poppins', sans-serif;
+  background: #0a0a1a;
+  color: #fff;
+  cursor: default;
 }
 
-#intro { 
-  position: fixed; 
-  inset: 0; 
-  background: #000; 
-  display: flex; 
-  align-items: center; 
-  justify-content: center; 
-  z-index: 100; 
-  animation: pulseBg 2s infinite alternate;
+.page {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1s;
+  z-index: 1;
 }
 
-#intro h1 { 
-  font-size: clamp(2rem, 5vw, 4rem); 
-  text-transform: uppercase; 
-  letter-spacing: 0.3em; 
-  background: linear-gradient(45deg, #ff00ff, #00ffff);
+.page.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+#particles {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.hearts-container {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.heart {
+  position: absolute;
+  font-size: 24px;
+  color: #ff4081;
+  opacity: 0;
+  animation: floatUp 5s linear forwards;
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(100vh) rotate(0deg);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(-100px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* Page 1: Opening */
+#page1 {
+  background: linear-gradient(135deg, #1a0033, #33001a);
+}
+
+.title {
+  font-family: 'Dancing Script', cursive;
+  font-size: 4.5rem;
+  text-align: center;
+  margin-bottom: 30px;
+  background: linear-gradient(45deg, #ff4081, #ff79a8, #ff4081);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  text-shadow: 0 0 30px rgba(255, 0, 255, 0.5);
-  animation: neonPulse 1.5s ease-in-out infinite alternate;
+  text-shadow: 0 0 30px rgba(255, 64, 129, 0.5);
 }
 
-#counter { 
-  position: fixed; 
-  top: 20px; 
-  right: 20px; 
-  font-size: 1.5rem; 
-  color: #00ffff; 
-  z-index: 10; 
-  font-weight: bold;
+.subtitle {
+  font-size: 1.5rem;
+  text-align: center;
+  margin-bottom: 50px;
+  opacity: 0.9;
+  max-width: 600px;
 }
 
-#pulseButton { 
-  position: fixed; 
-  bottom: 30px; 
-  left: 50%; 
-  transform: translateX(-50%); 
-  padding: 15px 40px; 
-  background: linear-gradient(45deg, #ff00ff, #00ffff); 
-  border: none; 
-  border-radius: 50px; 
-  color: white; 
-  font-size: 1.2rem; 
-  font-weight: bold; 
-  cursor: pointer; 
-  z-index: 10; 
-  box-shadow: 0 0 30px rgba(255, 0, 255, 0.5);
-  animation: buttonGlow 2s infinite alternate;
+.continue-btn {
+  background: linear-gradient(45deg, #ff4081, #ff79a8);
+  color: white;
+  border: none;
+  padding: 18px 45px;
+  font-size: 1.3rem;
+  border-radius: 50px;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  letter-spacing: 1px;
+  box-shadow: 0 10px 30px rgba(255, 64, 129, 0.4);
+  transition: transform 0.3s, box-shadow 0.3s;
+  margin-top: 30px;
+}
+
+.continue-btn:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(255, 64, 129, 0.6);
+}
+
+/* Page 2: Memory Lane */
+#page2 {
+  background: linear-gradient(135deg, #1a0033, #002233);
+}
+
+.memory-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 25px;
+  max-width: 900px;
+  margin: 40px auto;
+}
+
+.memory-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 25px;
+  width: 250px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   transition: transform 0.3s, box-shadow 0.3s;
 }
 
-#pulseButton:hover { 
-  transform: translateX(-50%) scale(1.1); 
-  box-shadow: 0 0 50px rgba(255, 0, 255, 0.8);
+.memory-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(255, 64, 129, 0.3);
 }
 
-#energyBar { 
-  position: fixed; 
-  top: 20px; 
-  left: 20px; 
-  width: 200px; 
-  height: 10px; 
-  background: rgba(255, 255, 255, 0.1); 
-  border-radius: 5px; 
-  overflow: hidden; 
+.memory-icon {
+  font-size: 2.5rem;
+  color: #ff79a8;
+  margin-bottom: 15px;
+}
+
+.memory-title {
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+  color: #ffb6c1;
+}
+
+.memory-text {
+  font-size: 0.95rem;
+  opacity: 0.9;
+}
+
+/* Page 3: Reasons */
+#page3 {
+  background: linear-gradient(135deg, #33001a, #1a3300);
+}
+
+.reasons-container {
+  max-width: 700px;
+  margin: 40px auto;
+  position: relative;
+}
+
+.reason {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 15px;
+  padding: 20px;
+  margin: 20px 0;
+  border-left: 5px solid #ff4081;
+  opacity: 0;
+  transform: translateX(-50px);
+}
+
+.reason-number {
+  display: inline-block;
+  background: #ff4081;
+  color: white;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 35px;
+  margin-right: 15px;
+  font-weight: bold;
+}
+
+/* Page 4: The Question */
+#page4 {
+  background: linear-gradient(135deg, #1a0033, #330033);
+  text-align: center;
+}
+
+.question-container {
+  max-width: 800px;
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(15px);
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+.question-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 3.5rem;
+  margin-bottom: 40px;
+  background: linear-gradient(45deg, #ff4081, #ff79a8, #ffd3e0);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  margin-top: 50px;
+  position: relative;
+  min-height: 200px;
+  align-items: center;
+}
+
+.choice-btn {
+  padding: 20px 60px;
+  font-size: 1.8rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: 'Poppins', sans-serif;
+  position: relative;
   z-index: 10;
 }
 
-#energyFill { 
-  width: 0%; 
-  height: 100%; 
-  background: linear-gradient(90deg, #00ffff, #ff00ff); 
-  transition: width 0.5s;
+#yes-btn {
+  background: linear-gradient(45deg, #4CAF50, #8BC34A);
+  color: white;
+  box-shadow: 0 10px 30px rgba(76, 175, 80, 0.4);
 }
 
-#instructions { 
-  position: fixed; 
-  top: 50%; 
-  left: 50%; 
-  transform: translate(-50%, -50%); 
-  text-align: center; 
-  font-size: 1.5rem; 
-  z-index: 5; 
-  opacity: 0.8;
+#yes-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 15px 40px rgba(76, 175, 80, 0.7);
 }
 
-#clickIndicator { 
-  position: fixed; 
-  width: 100px; 
-  height: 100px; 
-  border-radius: 50%; 
-  border: 3px dashed #00ffff; 
-  pointer-events: none; 
-  z-index: 3; 
-  animation: spin 10s linear infinite;
+#no-btn {
+  background: linear-gradient(45deg, #f44336, #FF9800);
+  color: white;
+  box-shadow: 0 10px 30px rgba(244, 67, 54, 0.4);
+  position: relative;
+  overflow: hidden;
 }
 
-#reactor { 
-  position: fixed; 
-  width: 300px; 
-  height: 300px; 
-  border-radius: 50%; 
-  background: radial-gradient(circle, rgba(255, 0, 255, 0.2), transparent 70%); 
-  pointer-events: none; 
-  z-index: 2; 
-  opacity: 0;
+#no-btn.running {
+  animation: runAround 2s infinite linear;
 }
 
-@keyframes pulseBg {
-  0% { background: #000; }
-  100% { background: #0a0a1a; }
+@keyframes runAround {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(100px, -50px); }
+  50% { transform: translate(0, -100px); }
+  75% { transform: translate(-100px, -50px); }
+  100% { transform: translate(0, 0); }
 }
 
-@keyframes neonPulse {
-  0% { text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff; }
-  100% { text-shadow: 0 0 20px #00ffff, 0 0 40px #00ffff; }
+/* Page 5: Celebration */
+#page5 {
+  background: linear-gradient(135deg, #4CAF50, #2196F3, #9C27B0);
+  background-size: 400% 400%;
+  animation: gradientBG 10s ease infinite;
 }
 
-@keyframes buttonGlow {
-  0% { box-shadow: 0 0 20px rgba(255, 0, 255, 0.5); }
-  100% { box-shadow: 0 0 40px rgba(0, 255, 255, 0.7); }
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
-@keyframes spin {
-  from { transform: translate(-50%, -50%) rotate(0deg); }
-  to { transform: translate(-50%, -50%) rotate(360deg); }
+.celebration-title {
+  font-family: 'Dancing Script', cursive;
+  font-size: 5rem;
+  text-align: center;
+  margin-bottom: 30px;
+  color: white;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+}
+
+.celebration-text {
+  font-size: 1.8rem;
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 50px;
+  line-height: 1.6;
+}
+
+.message-container {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 30px;
+  max-width: 700px;
+  margin: 30px auto;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.final-message {
+  font-size: 1.4rem;
+  line-height: 1.8;
+  text-align: center;
+}
+
+.countdown {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #FFEB3B;
+  text-shadow: 0 0 15px rgba(255, 235, 59, 0.7);
+  margin-top: 30px;
+  transition: transform 0.3s;
+}
+
+.progress-container {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 15px;
+  z-index: 100;
+}
+
+.progress-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.progress-dot.active {
+  background: #ff4081;
+  box-shadow: 0 0 10px #ff4081;
+}
+
+@media (max-width: 768px) {
+  .title, .celebration-title {
+    font-size: 3rem;
+  }
+  
+  .question-title {
+    font-size: 2.5rem;
+  }
+  
+  .buttons-container {
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+  }
+  
+  .choice-btn {
+    padding: 15px 40px;
+    font-size: 1.5rem;
+  }
+  
+  .memory-container {
+    flex-direction: column;
+    align-items: center;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<div id="scene"></div>
-<div id="intro"><h1>NEURAL PULSE</h1></div>
-<div id="counter">00000</div>
-<div id="energyBar"><div id="energyFill"></div></div>
-<div id="instructions">CLICK ANYWHERE → FEED THE SYSTEM</div>
-<div id="clickIndicator"></div>
-<div id="reactor"></div>
-<button id="pulseButton">PULSE NOW</button>
+<div id="particles"></div>
+<div class="hearts-container" id="heartsContainer"></div>
+
+<!-- Page 1: Opening -->
+<div id="page1" class="page active">
+  <h1 class="title">My Dearest Valentine</h1>
+  <p class="subtitle">Every moment with you is a story worth telling. Today, I want to share our story in a special way.</p>
+  <p class="subtitle">Will you take this journey with me?</p>
+  <button class="continue-btn" id="page1-btn">
+    <i class="fas fa-heart" style="margin-right: 10px;"></i> Begin Our Journey
+  </button>
+</div>
+
+<!-- Page 2: Memory Lane -->
+<div id="page2" class="page">
+  <h1 class="title">Our Memory Lane</h1>
+  <p class="subtitle">Some moments I'll cherish forever...</p>
+  
+  <div class="memory-container">
+    <div class="memory-card">
+      <div class="memory-icon"><i class="fas fa-smile-beam"></i></div>
+      <h3 class="memory-title">Your Smile</h3>
+      <p class="memory-text">The first time I saw you smile, I knew my world had changed forever.</p>
+    </div>
+    
+    <div class="memory-card">
+      <div class="memory-icon"><i class="fas fa-moon"></i></div>
+      <h3 class="memory-title">Late Night Talks</h3>
+      <p class="memory-text">Those endless conversations that made time stand still.</p>
+    </div>
+    
+    <div class="memory-card">
+      <div class="memory-icon"><i class="fas fa-hands-helping"></i></div>
+      <h3 class="memory-title">Your Support</h3>
+      <p class="memory-text">How you're always there, lifting me up when I need it most.</p>
+    </div>
+    
+    <div class="memory-card">
+      <div class="memory-icon"><i class="fas fa-laugh"></i></div>
+      <h3 class="memory-title">Our Laughter</h3>
+      <p class="memory-text">The way we can laugh together at absolutely anything.</p>
+    </div>
+  </div>
+  
+  <button class="continue-btn" id="page2-btn">
+    <i class="fas fa-arrow-right" style="margin-right: 10px;"></i> Continue
+  </button>
+</div>
+
+<!-- Page 3: Reasons I Love You -->
+<div id="page3" class="page">
+  <h1 class="title">Why I Love You</h1>
+  <p class="subtitle">If I had to list every reason, we'd be here forever. But here are a few...</p>
+  
+  <div class="reasons-container">
+    <div class="reason" id="reason1">
+      <span class="reason-number">1</span>
+      <strong>Your kindness</strong> - the way you care about others, even strangers
+    </div>
+    
+    <div class="reason" id="reason2">
+      <span class="reason-number">2</span>
+      <strong>Your intelligence</strong> - how you see the world in ways I never could
+    </div>
+    
+    <div class="reason" id="reason3">
+      <span class="reason-number">3</span>
+      <strong>Your strength</strong> - facing challenges with grace and courage
+    </div>
+    
+    <div class="reason" id="reason4">
+      <span class="reason-number">4</span>
+      <strong>Your humor</strong> - making me laugh even on the toughest days
+    </div>
+    
+    <div class="reason" id="reason5">
+      <span class="reason-number">5</span>
+      <strong>Your heart</strong> - the most beautiful part of you that you share with me
+    </div>
+  </div>
+  
+  <button class="continue-btn" id="page3-btn">
+    <i class="fas fa-arrow-right" style="margin-right: 10px;"></i> To The Important Part
+  </button>
+</div>
+
+<!-- Page 4: The Question -->
+<div id="page4" class="page">
+  <div class="question-container">
+    <h1 class="question-title">My Love,</h1>
+    
+    <div style="font-size: 1.4rem; line-height: 1.8; margin-bottom: 40px;">
+      <p>Every day with you feels like a blessing I don't deserve.</p>
+      <p>You've filled my life with more joy than I ever thought possible.</p>
+      <p>And now, I have just one question for you...</p>
+    </div>
+    
+    <h1 class="question-title" style="font-size: 3rem; margin: 40px 0;">
+      Will You Be My Valentine Forever?
+    </h1>
+    
+    <div class="buttons-container">
+      <button class="choice-btn" id="yes-btn">
+        <i class="fas fa-heart" style="margin-right: 10px;"></i> YES!
+      </button>
+      
+      <button class="choice-btn" id="no-btn">
+        <i class="fas fa-times" style="margin-right: 10px;"></i> No
+      </button>
+    </div>
+    
+    <p style="margin-top: 30px; opacity: 0.7; font-style: italic;">
+      P.S. The "No" button is just for show. There's only one real choice here ❤️
+    </p>
+  </div>
+</div>
+
+<!-- Page 5: Celebration -->
+<div id="page5" class="page">
+  <h1 class="celebration-title">YES! ❤️</h1>
+  
+  <div class="message-container">
+    <p class="final-message">
+      You've made me the happiest person in the world! 
+      This Valentine's Day is just the beginning of forever with you.
+    </p>
+    
+    <p class="final-message" style="margin-top: 20px; font-weight: bold;">
+      I can't wait to create a lifetime of memories together.
+    </p>
+  </div>
+  
+  <p class="celebration-text">
+    <i class="fas fa-heart" style="color: #ff4081; margin: 0 10px;"></i>
+    Happy Valentine's Day, My Love!
+    <i class="fas fa-heart" style="color: #ff4081; margin: 0 10px;"></i>
+  </p>
+  
+  <div class="countdown" id="countdown">
+    Our Forever Starts Now...
+  </div>
+  
+  <button class="continue-btn" id="reset-btn">
+    <i class="fas fa-redo" style="margin-right: 10px;"></i> Relive This Moment
+  </button>
+</div>
+
+<!-- Progress dots -->
+<div class="progress-container">
+  <div class="progress-dot active" id="dot1" onclick="goToPage(1)"></div>
+  <div class="progress-dot" id="dot2" onclick="goToPage(2)"></div>
+  <div class="progress-dot" id="dot3" onclick="goToPage(3)"></div>
+  <div class="progress-dot" id="dot4" onclick="goToPage(4)"></div>
+  <div class="progress-dot" id="dot5" onclick="goToPage(5)"></div>
+</div>
 
 <script>
-// ==================== IMMEDIATE ENGAGEMENT ====================
-let clickCount = 0;
-let energy = 0;
-let isPlaying = false;
-const audio = new Audio('https://assets.mixkit.co/music/preview/mixkit-tech-house-vibes-130.mp3');
-audio.loop = true;
-audio.volume = 0;
+// ==================== FIXED NAVIGATION CODE ====================
 
-// ==================== PARTICLE SYSTEM ====================
-tsParticles.load("scene", {
+let currentPage = 1;
+const totalPages = 5;
+let heartsInterval;
+let celebrationHeartsInterval;
+
+// Initialize particles
+tsParticles.load("particles", {
   particles: {
-    number: { value: 30 },
-    color: { value: ["#ff00ff", "#00ffff"] },
-    opacity: { value: 0.8 },
-    size: { value: { min: 2, max: 5 } },
-    move: { 
-      enable: true, 
-      speed: 1,
-      direction: "outside",
-      outModes: "bounce"
-    },
-    links: {
+    number: { value: 80 },
+    color: { value: "#ff4081" },
+    shape: { type: "circle" },
+    opacity: { value: 0.5, random: true },
+    size: { value: 3, random: true },
+    line_linked: {
       enable: true,
-      distance: 100,
-      color: "#ffffff",
-      opacity: 0.2
+      distance: 150,
+      color: "#ff79a8",
+      opacity: 0.2,
+      width: 1
+    },
+    move: {
+      enable: true,
+      speed: 2,
+      direction: "none",
+      random: true,
+      straight: false,
+      out_mode: "out",
+      bounce: false
     }
   },
   interactivity: {
+    detect_on: "canvas",
     events: {
-      onClick: { enable: true, mode: "push" },
-      onHover: { enable: true, mode: "repulse" }
+      onhover: { enable: true, mode: "repulse" },
+      onclick: { enable: true, mode: "push" }
     }
   }
 });
 
-// ==================== START EXPERIENCE ====================
-function startExperience() {
-  if (isPlaying) return;
-  isPlaying = true;
+// FIXED: Heart creation with performance limit
+function createHeart() {
+  // Performance optimization: limit total hearts
+  if (document.getElementById("heartsContainer").children.length > 80) {
+    return;
+  }
   
-  // Remove intro
-  gsap.to("#intro", { opacity: 0, duration: 0.5, onComplete: () => {
-    document.getElementById("intro").remove();
-  }});
+  const heart = document.createElement("div");
+  heart.classList.add("heart");
+  heart.innerHTML = "❤️";
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.fontSize = (Math.random() * 20 + 20) + "px";
+  heart.style.animationDuration = (Math.random() * 3 + 4) + "s";
   
-  // Start audio
-  audio.play();
-  gsap.to(audio, { volume: 0.3, duration: 2 });
+  document.getElementById("heartsContainer").appendChild(heart);
   
-  // Animate instructions
-  gsap.to("#instructions", { 
-    y: -50, 
-    duration: 2, 
-    ease: "power2.out",
-    opacity: 1 
-  });
-  
-  // Show click indicator
-  document.getElementById("clickIndicator").style.display = "block";
-  
-  // Start heartbeat
-  setInterval(heartbeat, 1000);
+  setTimeout(() => {
+    if (heart.parentNode) {
+      heart.remove();
+    }
+  }, 5000);
 }
 
-// ==================== HEARTBEAT SYSTEM ====================
-function heartbeat() {
-  if (energy > 0) {
-    energy = Math.max(0, energy - 5);
-    updateEnergyBar();
+function startHearts(rate = 300) {
+  clearInterval(heartsInterval);
+  heartsInterval = setInterval(createHeart, rate);
+}
+
+function startCelebrationHearts() {
+  clearInterval(celebrationHeartsInterval);
+  celebrationHeartsInterval = setInterval(createHeart, 80);
+  
+  for (let i = 0; i < 20; i++) {
+    setTimeout(() => createHeart(), i * 50);
+  }
+}
+
+// FIXED: Navigation function - this was the main issue
+function goToPage(pageNumber) {
+  if (pageNumber < 1 || pageNumber > totalPages) return;
+  
+  // Hide current page
+  document.getElementById(`page${currentPage}`).classList.remove("active");
+  document.getElementById(`dot${currentPage}`).classList.remove("active");
+  
+  // Show new page
+  document.getElementById(`page${pageNumber}`).classList.add("active");
+  document.getElementById(`dot${pageNumber}`).classList.add("active");
+  
+  // Animate the progress dot
+  gsap.fromTo(`#dot${pageNumber}`,
+    { scale: 0.6 },
+    { scale: 1.2, duration: 0.3, yoyo: true, repeat: 1 }
+  );
+  
+  currentPage = pageNumber;
+  
+  // Page-specific logic
+  if (pageNumber === 3) {
+    setTimeout(() => {
+      gsap.to("#reason1", { opacity: 1, x: 0, duration: 0.8 });
+    }, 300);
     
-    // Visual pulse
-    gsap.to("#scene", {
-      background: "radial-gradient(circle at 50% 50%, #1a0a2a, #000)",
-      duration: 0.5,
+    setTimeout(() => {
+      gsap.to("#reason2", { opacity: 1, x: 0, duration: 0.8 });
+    }, 800);
+    
+    setTimeout(() => {
+      gsap.to("#reason3", { opacity: 1, x: 0, duration: 0.8 });
+    }, 1300);
+    
+    setTimeout(() => {
+      gsap.to("#reason4", { opacity: 1, x: 0, duration: 0.8 });
+    }, 1800);
+    
+    setTimeout(() => {
+      gsap.to("#reason5", { opacity: 1, x: 0, duration: 0.8 });
+    }, 2300);
+  }
+  
+  if (pageNumber === 4) {
+    setTimeout(() => {
+      document.getElementById("no-btn").classList.add("running");
+    }, 1000);
+  }
+  
+  if (pageNumber === 5) {
+    clearInterval(heartsInterval);
+    startCelebrationHearts();
+    startCountdown();
+    playCelebrationSound();
+  }
+}
+
+// FIXED: Next page function
+function nextPage() {
+  if (currentPage < totalPages) {
+    goToPage(currentPage + 1);
+  }
+}
+
+// FIXED: Dodge button
+function dodgeButton() {
+  const noBtn = document.getElementById("no-btn");
+  const maxX = 200;
+  const maxY = 120;
+  const randomX = (Math.random() - 0.5) * maxX;
+  const randomY = (Math.random() - 0.5) * maxY;
+
+  gsap.to(noBtn, {
+    x: randomX,
+    y: randomY,
+    duration: 0.3,
+    ease: "power2.out"
+  });
+  
+  const messages = [
+    "Nice try!",
+    "You can't escape!",
+    "Not so fast!",
+    "Come back here!",
+    "There's only one right answer!",
+    "I'm a slippery button!"
+  ];
+  
+  const message = messages[Math.floor(Math.random() * messages.length)];
+  const floatMsg = document.createElement("div");
+  floatMsg.textContent = message;
+  floatMsg.style.cssText = `
+    position: absolute;
+    color: #ff4081;
+    font-weight: bold;
+    font-size: 1.2rem;
+    pointer-events: none;
+    z-index: 100;
+    left: ${noBtn.offsetLeft + noBtn.offsetWidth/2}px;
+    top: ${noBtn.offsetTop - 30}px;
+    opacity: 0;
+  `;
+  
+  document.getElementById("page4").appendChild(floatMsg);
+  
+  gsap.to(floatMsg, {
+    y: -50,
+    opacity: 1,
+    duration: 0.5,
+    onComplete: () => {
+      gsap.to(floatMsg, {
+        opacity: 0,
+        duration: 0.3,
+        onComplete: () => floatMsg.remove()
+      });
+    }
+  });
+}
+
+function chooseYes() {
+  for (let i = 0; i < 30; i++) {
+    setTimeout(() => createHeart(), i * 50);
+  }
+  
+  goToPage(5);
+  playYesSound();
+}
+
+function startCountdown() {
+  const countdownEl = document.getElementById("countdown");
+  let count = 8;
+  
+  const countdownInterval = setInterval(() => {
+    countdownEl.textContent = `Our Forever Starts in ${count}...`;
+    
+    gsap.to(countdownEl, {
+      scale: 1.2,
+      duration: 0.2,
       yoyo: true,
       repeat: 1
     });
-  }
-}
-
-// ==================== CLICK HANDLER ====================
-function handleClick(x, y, isButton = false) {
-  clickCount++;
-  
-  // Update counter with animation
-  const counter = document.getElementById("counter");
-  counter.textContent = String(clickCount).padStart(5, '0');
-  gsap.to(counter, { 
-    scale: 1.2, 
-    color: isButton ? "#ff00ff" : "#00ffff",
-    duration: 0.2, 
-    yoyo: true 
-  });
-  
-  // Add energy
-  energy = Math.min(100, energy + (isButton ? 20 : 10));
-  updateEnergyBar();
-  
-  // Create visual effect
-  createClickEffect(x, y, isButton);
-  
-  // Audio feedback
-  if (audio.volume < 0.7) {
-    audio.volume = Math.min(0.7, audio.volume + 0.02);
-  }
-  
-  // Particle explosion
-  tsParticles.load("scene", {
-    particles: {
-      number: { value: 50 + clickCount },
-      color: { value: isButton ? "#ff00ff" : "#00ffff" },
-      move: { speed: 2 + (clickCount * 0.1) },
-      links: { distance: 100 + clickCount }
-    }
-  });
-  
-  // Show reactor on high energy
-  if (energy > 70) {
-    showReactor(x, y);
-  }
-  
-  // Random message
-  if (Math.random() > 0.7) {
-    showRandomMessage();
-  }
-}
-
-function createClickEffect(x, y, isButton) {
-  const effect = document.createElement("div");
-  effect.style.cssText = `
-    position: fixed;
-    left: ${x}px;
-    top: ${y}px;
-    width: 0px;
-    height: 0px;
-    border-radius: 50%;
-    background: radial-gradient(circle, ${isButton ? "#ff00ff" : "#00ffff"}, transparent);
-    pointer-events: none;
-    z-index: 5;
-  `;
-  document.body.appendChild(effect);
-  
-  gsap.to(effect, {
-    width: "200px",
-    height: "200px",
-    opacity: 0,
-    duration: 1,
-    onComplete: () => effect.remove()
-  });
-}
-
-function updateEnergyBar() {
-  document.getElementById("energyFill").style.width = `${energy}%`;
-  
-  // Change color based on energy
-  const colors = energy > 70 ? ["#ff00ff", "#ff0000"] : 
-                  energy > 40 ? ["#00ffff", "#ff00ff"] : 
-                  ["#00ffff", "#0088ff"];
-  
-  document.getElementById("energyFill").style.background = 
-    `linear-gradient(90deg, ${colors[0]}, ${colors[1]})`;
-}
-
-function showReactor(x, y) {
-  const reactor = document.getElementById("reactor");
-  reactor.style.left = `${x}px`;
-  reactor.style.top = `${y}px`;
-  
-  gsap.to(reactor, {
-    opacity: 0.5,
-    scale: 1.5,
-    duration: 1,
-    onComplete: () => {
-      gsap.to(reactor, {
-        opacity: 0,
-        scale: 1,
-        duration: 0.5
-      });
-    }
-  });
-}
-
-function showRandomMessage() {
-  const messages = [
-    "FEED ME MORE",
-    "SYSTEM OVERLOAD",
-    "NEURAL CONNECTION ACTIVE",
-    "PULSE DETECTED",
-    "ENERGY SURGE",
-    "CRITICAL MASS ACHIEVED"
-  ];
-  
-  const msg = document.createElement("div");
-  msg.textContent = messages[Math.floor(Math.random() * messages.length)];
-  msg.style.cssText = `
-    position: fixed;
-    top: ${30 + Math.random() * 40}%;
-    left: ${20 + Math.random() * 60}%;
-    color: #ff00ff;
-    font-size: ${1 + Math.random()}rem;
-    font-weight: bold;
-    pointer-events: none;
-    z-index: 10;
-    opacity: 0;
-  `;
-  document.body.appendChild(msg);
-  
-  gsap.to(msg, {
-    opacity: 1,
-    y: -50,
-    duration: 1,
-    onComplete: () => {
-      gsap.to(msg, {
-        opacity: 0,
-        duration: 0.5,
-        onComplete: () => msg.remove()
-      });
-    }
-  });
-}
-
-// ==================== EVENT LISTENERS ====================
-// Start on ANY interaction
-document.addEventListener('click', (e) => {
-  if (!isPlaying) {
-    startExperience();
-    handleClick(e.clientX, e.clientY);
-  } else {
-    handleClick(e.clientX, e.clientY);
-  }
-});
-
-document.addEventListener('touchstart', (e) => {
-  if (!isPlaying) {
-    startExperience();
-    handleClick(e.touches[0].clientX, e.touches[0].clientY);
-  } else {
-    handleClick(e.touches[0].clientX, e.touches[0].clientY);
-  }
-});
-
-// Button click
-document.getElementById("pulseButton").addEventListener("click", (e) => {
-  e.stopPropagation();
-  handleClick(e.clientX, e.clientY, true);
-  
-  // Button animation
-  gsap.to("#pulseButton", {
-    scale: 1.3,
-    duration: 0.2,
-    yoyo: true
-  });
-});
-
-// Mouse move effects
-document.addEventListener("mousemove", (e) => {
-  // Move click indicator
-  const indicator = document.getElementById("clickIndicator");
-  indicator.style.left = `${e.clientX}px`;
-  indicator.style.top = `${e.clientY}px`;
-  
-  // Particle repulse effect
-  if (isPlaying && Math.random() > 0.8) {
-    tsParticles.load("scene", {
-      particles: {
-        move: { speed: 1 + energy/50 }
-      }
-    });
-  }
-});
-
-// Keyboard support
-document.addEventListener("keydown", (e) => {
-  if (e.code === "Space") {
-    handleClick(window.innerWidth/2, window.innerHeight/2, true);
-  }
-});
-
-// Mobile tap indicator
-if ('ontouchstart' in window) {
-  document.body.style.cursor = "pointer";
-  document.getElementById("instructions").textContent = "TAP ANYWHERE → FEED THE SYSTEM";
-}
-
-// ==================== PROGRESSIVE DIFFICULTY ====================
-setInterval(() => {
-  if (isPlaying && energy < 30 && clickCount > 10) {
-    document.getElementById("instructions").textContent = 
-      clickCount > 50 ? "DON'T STOP NOW → SYSTEM DEPENDS ON YOU" :
-      clickCount > 20 ? "KEEP GOING → ENERGY DROPPING" :
-      "CLICK FASTER → ENERGY LOW";
     
-    gsap.to("#instructions", {
-      color: "#ff0000",
-      duration: 0.5,
-      yoyo: true
-    });
-  }
-}, 3000);
+    count--;
+    
+    if (count < 0) {
+      clearInterval(countdownInterval);
+      countdownEl.textContent = "Our Forever Starts Now! ❤️";
+      
+      gsap.to(countdownEl, {
+        scale: 1.3,
+        duration: 0.5,
+        yoyo: true,
+        repeat: 2
+      });
+      
+      for (let i = 0; i < 15; i++) {
+        setTimeout(() => createHeart(), i * 100);
+      }
+    }
+  }, 1000);
+}
 
-// ==================== START PULSE ====================
-// Auto-start after 3 seconds
-setTimeout(() => {
-  if (!isPlaying) {
-    document.getElementById("instructions").innerHTML = 
-      "⚠️ CLICK NOW OR SYSTEM WILL SHUTDOWN ⚠️";
-    gsap.to("#instructions", {
-      scale: 1.1,
-      duration: 0.5,
-      repeat: 3
-    });
+function playCelebrationSound() {
+  try {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    
+    setTimeout(() => {
+      playNote(523.25, 0.3, 0.1);
+    }, 500);
+    
+    setTimeout(() => {
+      playNote(659.25, 0.3, 0.3);
+    }, 1000);
+    
+    setTimeout(() => {
+      playNote(783.99, 0.5, 0.5);
+    }, 1500);
+    
+    function playNote(frequency, duration, volume) {
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+      
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      
+      oscillator.frequency.value = frequency;
+      oscillator.type = 'sine';
+      
+      gainNode.gain.setValueAtTime(volume, audioContext.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + duration);
+      
+      oscillator.start(audioContext.currentTime);
+      oscillator.stop(audioContext.currentTime + duration);
+    }
+  } catch (e) {
+    console.log("Audio not supported");
   }
-}, 3000);
+}
+
+function playYesSound() {
+  try {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    oscillator.frequency.value = 880;
+    oscillator.type = 'sine';
+    
+    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.5);
+    
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.5);
+  } catch (e) {
+    // Audio not supported
+  }
+}
+
+function resetExperience() {
+  clearInterval(heartsInterval);
+  clearInterval(celebrationHeartsInterval);
+  
+  document.getElementById(`page${currentPage}`).classList.remove("active");
+  document.getElementById(`dot${currentPage}`).classList.remove("active");
+  
+  currentPage = 1;
+  
+  document.getElementById(`page${currentPage}`).classList.add("active");
+  document.getElementById(`dot${currentPage}`).classList.add("active");
+  
+  const noBtn = document.getElementById("no-btn");
+  noBtn.classList.remove("running");
+  gsap.to(noBtn, { x: 0, y: 0, duration: 0.5 });
+  
+  document.getElementById("heartsContainer").innerHTML = "";
+  startHearts();
+  
+  document.getElementById("countdown").textContent = "Our Forever Starts Now...";
+  gsap.set("#countdown", { scale: 1 });
+}
+
+// FIXED: Set up event listeners properly
+window.addEventListener('load', function() {
+  startHearts();
+  
+  // Animate the title
+  gsap.from(".title", { 
+    duration: 1.5, 
+    y: -50, 
+    opacity: 0, 
+    ease: "power3.out" 
+  });
+  
+  gsap.from(".subtitle", { 
+    duration: 1.5, 
+    y: 30, 
+    opacity: 0, 
+    delay: 0.5,
+    stagger: 0.3,
+    ease: "power3.out" 
+  });
+  
+  gsap.from(".continue-btn", { 
+    duration: 1, 
+    scale: 0, 
+    opacity: 0, 
+    delay: 1.5,
+    ease: "back.out(1.7)" 
+  });
+  
+  // FIXED: Button event listeners
+  document.getElementById('page1-btn').addEventListener('click', () => goToPage(2));
+  document.getElementById('page2-btn').addEventListener('click', () => goToPage(3));
+  document.getElementById('page3-btn').addEventListener('click', () => goToPage(4));
+  document.getElementById('yes-btn').addEventListener('click', chooseYes);
+  document.getElementById('reset-btn').addEventListener('click', resetExperience);
+  
+  // No button mouse/touch events
+  document.getElementById('no-btn').addEventListener('mouseover', dodgeButton);
+  document.getElementById('no-btn').addEventListener('touchstart', function(e) {
+    e.preventDefault();
+    dodgeButton();
+  });
+});
+
+// Keyboard navigation
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight' && currentPage < totalPages) {
+    goToPage(currentPage + 1);
+  } else if (e.key === 'ArrowLeft' && currentPage > 1) {
+    goToPage(currentPage - 1);
+  } else if (e.key === ' ' || e.key === 'Enter') {
+    if (currentPage === 4) {
+      chooseYes();
+    } else if (currentPage < totalPages) {
+      goToPage(currentPage + 1);
+    }
+  }
+});
+
+window.addEventListener('beforeunload', () => {
+  clearInterval(heartsInterval);
+  clearInterval(celebrationHeartsInterval);
+});
 </script>
-
 </body>
 </html>
